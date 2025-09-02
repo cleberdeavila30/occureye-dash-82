@@ -12,14 +12,20 @@ export const useGoogleSheets = () => {
     const lines = csvText.split('\n');
     const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim()).filter(h => h);
     
-    return lines.slice(1)
+    console.log('🔍 Debug CSV Headers:', headers);
+    
+    const parsedData = lines.slice(1)
       .filter(line => line.trim())
-      .map(line => {
+      .map((line, index) => {
         const values = line.split(',').map(v => v.replace(/"/g, '').trim());
         const record: any = {};
         
-        headers.forEach((header, index) => {
-          const value = values[index] || '';
+        if (index < 3) {
+          console.log(`🔍 Debug linha ${index + 1} valores:`, values);
+        }
+        
+        headers.forEach((header, headerIndex) => {
+          const value = values[headerIndex] || '';
           
           switch(header) {
             case 'ANO':
@@ -28,6 +34,15 @@ export const useGoogleSheets = () => {
               break;
             case 'PRESOS':
               record[header] = value && value !== '' ? parseInt(value) || 0 : 0;
+              if (index < 3 && value) {
+                console.log(`🔍 Debug PRESOS linha ${index + 1}:`, value, '→', record[header]);
+              }
+              break;
+            case 'PRISAO':
+              record[header] = value;
+              if (index < 3) {
+                console.log(`🔍 Debug PRISAO linha ${index + 1}:`, value);
+              }
               break;
             default:
               record[header] = value;
@@ -37,6 +52,11 @@ export const useGoogleSheets = () => {
         return record as OcorrenciaRecord;
       })
       .filter(record => record.DATA && record.ANO);
+    
+    console.log('🔍 Debug Total registros parseados:', parsedData.length);
+    console.log('🔍 Debug Primeiros 3 registros:', parsedData.slice(0, 3));
+    
+    return parsedData;
   };
 
   const fetchData = async () => {

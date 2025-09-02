@@ -28,6 +28,8 @@ export const useDashboardData = (data: OcorrenciaRecord[], filters: DashboardFil
     
     const totalRegistros = filteredData.length;
     
+    console.log('🔍 Debug KPIs - Total registros filtrados:', totalRegistros);
+    
     // Total de Prisões: conta registros onde PRISAO = "SIM"
     const totalPrisoes = filteredData.filter(r => {
       if (!r.PRISAO) return false;
@@ -35,12 +37,18 @@ export const useDashboardData = (data: OcorrenciaRecord[], filters: DashboardFil
       return prisaoValue === 'SIM';
     }).length;
     
+    console.log('🔍 Debug KPIs - Total prisões:', totalPrisoes);
+    console.log('🔍 Debug KPIs - Exemplos PRISAO:', filteredData.slice(0, 5).map(r => r.PRISAO));
+    
     // Total de Presos: soma da coluna PRESOS
     const totalPresos = filteredData.reduce((sum, r) => {
       if (!r.PRESOS) return sum;
       const presosValue = typeof r.PRESOS === 'number' ? r.PRESOS : parseInt(String(r.PRESOS)) || 0;
       return sum + presosValue;
     }, 0);
+    
+    console.log('🔍 Debug KPIs - Total presos:', totalPresos);
+    console.log('🔍 Debug KPIs - Exemplos PRESOS:', filteredData.slice(0, 5).map(r => r.PRESOS));
     
     const comparativoAno = lastYearData.length > 0 
       ? ((currentYearData.length - lastYearData.length) / lastYearData.length) * 100
