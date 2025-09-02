@@ -10,13 +10,22 @@ export const useGoogleSheets = () => {
 
   const parseCSV = (csvText: string): OcorrenciaRecord[] => {
     const lines = csvText.split('\n');
+    const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+    
+    console.log('🔍 Debug Headers CSV:', headers);
+    console.log('🔍 Debug Total colunas:', headers.length);
     
     return lines.slice(1)
       .filter(line => line.trim())
       .map((line, index) => {
         const values = line.split(',').map(v => v.replace(/"/g, '').trim());
         
-        // Mapeamento correto baseado na posição real dos valores
+        if (index < 3) {
+          console.log(`🔍 Debug linha ${index + 1} - Total valores:`, values.length);
+          console.log(`🔍 Debug linha ${index + 1} - Valores:`, values);
+        }
+        
+        // Mapeamento baseado nos headers reais do CSV
         const record: OcorrenciaRecord = {
           DATA: values[0] || '',
           ANO: values[1] ? parseInt(values[1]) || 0 : 0,
@@ -30,15 +39,17 @@ export const useGoogleSheets = () => {
           BAIRRO: values[9] || '',
           LEL: values[10] || '',
           RESUMO: values[11] || '',
-          PRISAO: values[13] || '', // Posição correta para PRISAO
-          PREDIO: values[14] || '', // Posição correta para PREDIO  
-          PRESOS: values[15] ? parseInt(values[15]) || 0 : 0 // Posição correta para PRESOS
+          PRISAO: values[12] || '', // Ajustar posição
+          PREDIO: values[13] || '',
+          PRESOS: values[14] ? parseInt(values[14]) || 0 : 0
         };
         
         if (index < 3) {
           console.log(`🔍 Debug registro ${index + 1}:`, {
             PRISAO: record.PRISAO,
-            PRESOS: record.PRESOS
+            PRESOS: record.PRESOS,
+            'Posição PRISAO (12)': values[12],
+            'Posição PRESOS (14)': values[14]
           });
         }
         
