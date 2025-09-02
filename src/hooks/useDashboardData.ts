@@ -44,11 +44,24 @@ export const useDashboardData = (data: OcorrenciaRecord[], filters: DashboardFil
     });
     console.log('🔍 Debug KPIs - Contagem por valor PRISAO:', prisaoCount);
     
-    // Total de Prisões: conta registros onde PRISAO = "SIM"
+    // Total de Prisões: conta todos os valores que indicam prisão (não apenas SIM)
     const totalPrisoes = filteredData.filter(r => {
       if (!r.PRISAO) return false;
       const prisaoValue = String(r.PRISAO).toUpperCase().trim();
-      return prisaoValue === 'SIM';
+      // Contar como prisão: SIM, DESOBEDIÊNCIA, RESISTÊNCIA, DESACATO
+      // Não contar: NAO, valores vazios, e coordenadas (que começam com -)
+      return prisaoValue === 'SIM' || 
+             prisaoValue === 'DESOBEDIÊNCIA' || 
+             prisaoValue === 'DESOBEDIENCIA' ||
+             prisaoValue === 'RESISTÊNCIA' || 
+             prisaoValue === 'RESISTENCIA' ||
+             prisaoValue === 'DESACATO' ||
+             (prisaoValue && 
+              prisaoValue !== 'NAO' && 
+              prisaoValue !== 'NÃO' && 
+              prisaoValue !== 'VAZIO' && 
+              !prisaoValue.startsWith('-') && // Excluir coordenadas
+              prisaoValue.length > 0);
     }).length;
     
     console.log('🔍 Debug KPIs - Total prisões SIM calculado:', totalPrisoes);
