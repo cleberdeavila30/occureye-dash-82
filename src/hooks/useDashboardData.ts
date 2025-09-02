@@ -27,8 +27,20 @@ export const useDashboardData = (data: OcorrenciaRecord[], filters: DashboardFil
     const lastYearData = data.filter(r => r.ANO === lastYear);
     
     const totalRegistros = filteredData.length;
-    const totalPrisoes = filteredData.filter(r => r.PRISAO === 'SIM').length;
-    const totalPresos = filteredData.reduce((sum, r) => sum + (r.PRESOS || 0), 0);
+    
+    // Total de Prisões: conta registros onde PRISAO = "SIM"
+    const totalPrisoes = filteredData.filter(r => 
+      r.PRISAO && r.PRISAO.toString().toUpperCase().trim() === 'SIM'
+    ).length;
+    
+    // Total de Presos: soma da coluna PRESOS
+    const totalPresos = filteredData.reduce((sum, r) => {
+      const presos = r.PRESOS;
+      if (presos && typeof presos === 'number') {
+        return sum + presos;
+      }
+      return sum;
+    }, 0);
     
     const comparativoAno = lastYearData.length > 0 
       ? ((currentYearData.length - lastYearData.length) / lastYearData.length) * 100
