@@ -20,36 +20,68 @@ export const useGoogleSheets = () => {
       .map((line, index) => {
         const values = line.split(',').map(v => v.replace(/"/g, '').trim());
         
-        if (index < 3) {
-          console.log(`🔍 Debug linha ${index + 1} - Total valores:`, values.length);
-          console.log(`🔍 Debug linha ${index + 1} - Valores:`, values);
+        if (index < 5) {
+          console.log(`🔍 LINHA ${index + 1} - Total valores:`, values.length);
+          console.log(`🔍 LINHA ${index + 1} - Linha bruta:`, line);
+          console.log(`🔍 LINHA ${index + 1} - Todos valores:`, values);
+          console.log(`🔍 LINHA ${index + 1} - PRISAO (pos 12):`, values[12]);
+          console.log(`🔍 LINHA ${index + 1} - PRESOS (pos 14):`, values[14]);
         }
         
-        // Mapeamento exato baseado nos headers do CSV
+        // Parse da linha CSV considerando vírgulas dentro de aspas
+        const parseCSVLine = (line: string): string[] => {
+          const result: string[] = [];
+          let current = '';
+          let inQuotes = false;
+          
+          for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            
+            if (char === '"') {
+              inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+              result.push(current.trim());
+              current = '';
+            } else {
+              current += char;
+            }
+          }
+          result.push(current.trim());
+          return result;
+        };
+        
+        const properValues = parseCSVLine(line);
+        
+        if (index < 3) {
+          console.log(`🔍 LINHA ${index + 1} - Parse correto - Total:`, properValues.length);
+          console.log(`🔍 LINHA ${index + 1} - Parse correto - Valores:`, properValues);
+        }
+        
+        // Usar o parse correto para mapeamento
         const record: OcorrenciaRecord = {
-          DATA: values[0] || '',           // Posição 0
-          ANO: values[1] ? parseInt(values[1]) || 0 : 0,  // Posição 1
-          HORA_DP: values[2] || '',        // Posição 2
-          HORA_CCONET: values[3] || '',    // Posição 3
-          TEMPO_OCORR: values[4] || '',    // Posição 4
-          PROTOCOLO: values[5] ? parseInt(values[5]) || 0 : 0, // Posição 5
-          FATO_DP: values[6] || '',        // Posição 6
-          OCORRENCIA_GCM: values[7] || '', // Posição 7
-          RUA: values[8] || '',            // Posição 8
-          BAIRRO: values[9] || '',         // Posição 9
-          LEL: values[10] || '',           // Posição 10
-          RESUMO: values[11] || '',        // Posição 11
-          PRISAO: values[12] || '',        // Posição 12 - PRISAO
-          PREDIO: values[13] || '',        // Posição 13 - PREDIO
-          PRESOS: values[14] ? parseInt(values[14]) || 0 : 0  // Posição 14 - PRESOS (coluna 15)
+          DATA: properValues[0] || '',
+          ANO: properValues[1] ? parseInt(properValues[1]) || 0 : 0,
+          HORA_DP: properValues[2] || '',
+          HORA_CCONET: properValues[3] || '',
+          TEMPO_OCORR: properValues[4] || '',
+          PROTOCOLO: properValues[5] ? parseInt(properValues[5]) || 0 : 0,
+          FATO_DP: properValues[6] || '',
+          OCORRENCIA_GCM: properValues[7] || '',
+          RUA: properValues[8] || '',
+          BAIRRO: properValues[9] || '',
+          LEL: properValues[10] || '',
+          RESUMO: properValues[11] || '',
+          PRISAO: properValues[12] || '',
+          PREDIO: properValues[13] || '',
+          PRESOS: properValues[14] ? parseInt(properValues[14]) || 0 : 0
         };
         
         if (index < 3) {
-          console.log(`🔍 Debug registro ${index + 1}:`, {
-            PRISAO: record.PRISAO,
-            PRESOS: record.PRESOS,
-            'Posição PRISAO (12)': values[12],
-            'Posição PRESOS (14)': values[14]
+          console.log(`🔍 REGISTRO FINAL ${index + 1}:`, {
+            'PRISAO': record.PRISAO,
+            'PRESOS': record.PRESOS,
+            'DATA': record.DATA,
+            'ANO': record.ANO
           });
         }
         
