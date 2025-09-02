@@ -25,23 +25,23 @@ export const useGoogleSheets = () => {
           console.log(`🔍 Debug linha ${index + 1} - Valores:`, values);
         }
         
-        // Mapeamento baseado nos headers reais do CSV
+        // Mapeamento exato baseado nos headers do CSV
         const record: OcorrenciaRecord = {
-          DATA: values[0] || '',
-          ANO: values[1] ? parseInt(values[1]) || 0 : 0,
-          HORA_DP: values[2] || '',
-          HORA_CCONET: values[3] || '',
-          TEMPO_OCORR: values[4] || '',
-          PROTOCOLO: values[5] ? parseInt(values[5]) || 0 : 0,
-          FATO_DP: values[6] || '',
-          OCORRENCIA_GCM: values[7] || '',
-          RUA: values[8] || '',
-          BAIRRO: values[9] || '',
-          LEL: values[10] || '',
-          RESUMO: values[11] || '',
-          PRISAO: values[12] || '', // Ajustar posição
-          PREDIO: values[13] || '',
-          PRESOS: values[14] ? parseInt(values[14]) || 0 : 0
+          DATA: values[0] || '',           // Posição 0
+          ANO: values[1] ? parseInt(values[1]) || 0 : 0,  // Posição 1
+          HORA_DP: values[2] || '',        // Posição 2
+          HORA_CCONET: values[3] || '',    // Posição 3
+          TEMPO_OCORR: values[4] || '',    // Posição 4
+          PROTOCOLO: values[5] ? parseInt(values[5]) || 0 : 0, // Posição 5
+          FATO_DP: values[6] || '',        // Posição 6
+          OCORRENCIA_GCM: values[7] || '', // Posição 7
+          RUA: values[8] || '',            // Posição 8
+          BAIRRO: values[9] || '',         // Posição 9
+          LEL: values[10] || '',           // Posição 10
+          RESUMO: values[11] || '',        // Posição 11
+          PRISAO: values[12] || '',        // Posição 12 - PRISAO
+          PREDIO: values[13] || '',        // Posição 13 - PREDIO
+          PRESOS: values[14] ? parseInt(values[14]) || 0 : 0  // Posição 14 - PRESOS
         };
         
         if (index < 3) {
