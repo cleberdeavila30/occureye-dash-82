@@ -28,12 +28,21 @@ export const useDashboardData = (data: OcorrenciaRecord[], filters: DashboardFil
     
     const totalRegistros = filteredData.length;
     
+    // Debug: log alguns registros para verificar os dados
+    console.log('Debug: Primeiros 5 registros filtrados:', filteredData.slice(0, 5));
+    console.log('Debug: Total de registros filtrados:', filteredData.length);
+    
     // Total de Prisões: conta registros onde PRISAO = "SIM" (case insensitive)
-    const totalPrisoes = filteredData.filter(r => {
+    const prisoesRecords = filteredData.filter(r => {
       if (!r.PRISAO) return false;
       const prisaoValue = String(r.PRISAO).toUpperCase().trim();
       return prisaoValue === 'SIM';
-    }).length;
+    });
+    
+    console.log('Debug: Registros com PRISAO = SIM:', prisoesRecords.length);
+    console.log('Debug: Exemplos de valores PRISAO:', filteredData.slice(0, 10).map(r => r.PRISAO));
+    
+    const totalPrisoes = prisoesRecords.length;
     
     // Total de Presos: soma da coluna PRESOS
     const totalPresos = filteredData.reduce((sum, r) => {
@@ -41,6 +50,9 @@ export const useDashboardData = (data: OcorrenciaRecord[], filters: DashboardFil
       const presosValue = typeof r.PRESOS === 'number' ? r.PRESOS : parseInt(String(r.PRESOS)) || 0;
       return sum + presosValue;
     }, 0);
+    
+    console.log('Debug: Total de presos calculado:', totalPresos);
+    console.log('Debug: Exemplos de valores PRESOS:', filteredData.slice(0, 10).map(r => r.PRESOS));
     
     const comparativoAno = lastYearData.length > 0 
       ? ((currentYearData.length - lastYearData.length) / lastYearData.length) * 100
