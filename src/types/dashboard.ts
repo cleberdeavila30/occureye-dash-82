@@ -7,6 +7,7 @@ export interface OcorrenciaRecord {
   PROTOCOLO: number;
   FATO_DP: string;
   OCORRENCIA_GCM: string;
+  OCORRENCIA_GCM__1?: string;
   RUA: string;
   BAIRRO: string;
   LEL: string;

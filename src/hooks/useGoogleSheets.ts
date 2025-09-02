@@ -12,15 +12,11 @@ export const useGoogleSheets = () => {
     const lines = csvText.split('\n');
     const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim()).filter(h => h);
     
-    console.log('Debug: Headers encontrados no CSV:', headers);
-    
     return lines.slice(1)
       .filter(line => line.trim())
       .map(line => {
         const values = line.split(',').map(v => v.replace(/"/g, '').trim());
         const record: any = {};
-        
-        console.log('Debug: Primeira linha de valores:', values.slice(0, headers.length));
         
         headers.forEach((header, index) => {
           const value = values[index] || '';
