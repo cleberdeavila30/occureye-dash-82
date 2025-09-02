@@ -30,6 +30,20 @@ export const useDashboardData = (data: OcorrenciaRecord[], filters: DashboardFil
     
     console.log('🔍 Debug KPIs - Total registros filtrados:', totalRegistros);
     
+    // Debug detalhado para valores de PRISAO
+    const allPrisaoValues = filteredData.map(r => r.PRISAO);
+    const uniquePrisaoValues = [...new Set(allPrisaoValues)];
+    console.log('🔍 Debug KPIs - Valores únicos PRISAO:', uniquePrisaoValues);
+    console.log('🔍 Debug KPIs - Total de valores PRISAO:', allPrisaoValues.length);
+    
+    // Contagem detalhada de cada valor único
+    const prisaoCount: Record<string, number> = {};
+    allPrisaoValues.forEach(value => {
+      const key = String(value || 'VAZIO').toUpperCase().trim();
+      prisaoCount[key] = (prisaoCount[key] || 0) + 1;
+    });
+    console.log('🔍 Debug KPIs - Contagem por valor PRISAO:', prisaoCount);
+    
     // Total de Prisões: conta registros onde PRISAO = "SIM"
     const totalPrisoes = filteredData.filter(r => {
       if (!r.PRISAO) return false;
@@ -37,8 +51,8 @@ export const useDashboardData = (data: OcorrenciaRecord[], filters: DashboardFil
       return prisaoValue === 'SIM';
     }).length;
     
-    console.log('🔍 Debug KPIs - Total prisões:', totalPrisoes);
-    console.log('🔍 Debug KPIs - Exemplos PRISAO:', filteredData.slice(0, 5).map(r => r.PRISAO));
+    console.log('🔍 Debug KPIs - Total prisões SIM calculado:', totalPrisoes);
+    console.log('🔍 Debug KPIs - Exemplos PRISAO (primeiros 10):', filteredData.slice(0, 10).map(r => r.PRISAO));
     
     // Total de Presos: soma da coluna PRESOS
     const totalPresos = filteredData.reduce((sum, r) => {
