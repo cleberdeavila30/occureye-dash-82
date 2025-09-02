@@ -41,7 +41,7 @@ export const useGoogleSheets = () => {
           RESUMO: values[11] || '',        // Posição 11
           PRISAO: values[12] || '',        // Posição 12 - PRISAO
           PREDIO: values[13] || '',        // Posição 13 - PREDIO
-          PRESOS: values[14] ? parseInt(values[14]) || 0 : 0  // Posição 14 - PRESOS
+          PRESOS: values[14] ? parseInt(values[14]) || 0 : 0  // Posição 14 - PRESOS (coluna 15)
         };
         
         if (index < 3) {
