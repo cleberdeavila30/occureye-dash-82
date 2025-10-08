@@ -185,6 +185,9 @@ const Index = () => {
                 Os dados são atualizados automaticamente a cada 5 minutos.
               </AlertDescription>
             </Alert>
+            <p className="text-sm text-muted-foreground mt-4">
+              Fonte: Boletim de Ocorrências SSP/DPPA registrados pela GCM.
+            </p>
           </CardContent>
         </Card>
       </div>
