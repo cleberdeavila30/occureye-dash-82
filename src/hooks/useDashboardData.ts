@@ -207,10 +207,7 @@ export const useDashboardData = (data: OcorrenciaRecord[], filters: DashboardFil
     const violenciaDomestica = filteredData.filter(r => 
       r.RESUMO?.toLowerCase().includes('violência doméstica') || 
       r.RESUMO?.toLowerCase().includes('violencia domestica') ||
-      r.RESUMO?.toLowerCase().includes('lei maria da penha') ||
-      r.RESUMO?.toLowerCase().includes('violencia') ||
-      r.RESUMO?.toLowerCase().includes('agressao') ||
-      r.RESUMO?.toLowerCase().includes('agressão')
+      r.RESUMO?.toLowerCase().includes('lei maria da penha')
     ).length;
     
     const foragidos = filteredData.filter(r => 
