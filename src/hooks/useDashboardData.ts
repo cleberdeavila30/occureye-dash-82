@@ -215,11 +215,7 @@ export const useDashboardData = (data: OcorrenciaRecord[], filters: DashboardFil
     
     const foragidos = filteredData.filter(r => 
       r.RESUMO?.toLowerCase().includes('foragido') ||
-      r.RESUMO?.toLowerCase().includes('procurado') ||
-      r.RESUMO?.toLowerCase().includes('mandado') ||
-      r.RESUMO?.toLowerCase().includes('prisão') ||
-      r.RESUMO?.toLowerCase().includes('prisao') ||
-      r.RESUMO?.toLowerCase().includes('captura')
+      r.RESUMO?.toLowerCase().includes('procurado')
     ).length;
     
     const furtos = filteredData.filter(r => 
